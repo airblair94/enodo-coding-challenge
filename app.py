@@ -75,6 +75,8 @@ def get_filters():
     columns = []
     table = Property.__table__
     for column in table.columns:
+        if column.name == 'id':
+            continue
         columnDef = {}
         columnDef['name'] = column.name
         columnDef['type'] = str(column.type)
