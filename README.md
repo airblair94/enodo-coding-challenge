@@ -1,5 +1,16 @@
 # enodo python
 
+## Installation
+To install packages
+- Create virtual env and run
+``` 
+pip install Flask, jsonify, request, flask-cors, sqlalchemy
+```
+Start the app:
+```
+python app.py
+```
+
 ## Assumptions
 
 - I assumed using sqlite and not using a full postgresql db was ok. I figured the important part was using the orm.
