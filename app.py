@@ -34,11 +34,11 @@ def get_distinct(colName):
 # route returns all properties using orm
 @app.route('/properties', methods=['GET', 'POST'])
 def get_properties():
+    # If post we add each filter and then query
     if request.method == 'POST':
         post_data = request.get_json()
         filters = []
         for key, value in post_data.items():
-            print(value)
             if value['type'] == 'VARCHAR(250)' or value['type'] == 'DATE':
                 filters.append(Property.__table__.c[value['name']] == value['value'])
             else:
@@ -46,15 +46,16 @@ def get_properties():
                     filters.append(Property.__table__.c[value['name']] > value['min'])
                 if (value['max']):
                     filters.append(Property.__table__.c[value['name']] < value['max'])
-        print(filters)
         query = Property.__table__.select().where(and_(*filters))
         response = session.execute(query).fetchall()
-        print(response)
         return json.dumps( [dict(ix) for ix in response], default = str)
     else:
         properties = session.query(Property).all()
         return json.dumps(Property.serialize_list(properties), default = str)
 
+# optional route to get data without using database
+# less useful in the long run as the database allows us 
+# column data and easy filtering information
 @app.route('/properties-no-db', methods=['GET'])
 def get_properties_no_db():
     data = []
@@ -66,6 +67,9 @@ def get_properties_no_db():
     
     return json.dumps(data, indent=4)
 
+# Filters goes through all column defs and if type is string or date
+# We return each column with its name a string representation of type
+# and if it is not numerical we return all distinct values in column
 @app.route('/filters', methods=['GET'])
 def get_filters():
     columns = []

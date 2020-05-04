@@ -170,7 +170,6 @@ class Property(Base):
       self.appeal_a_currav = appeal_a_currav
       self.appeal_a_resltdate = appeal_a_resltdate
 
-
     def serialize(self):
         return {c: getattr(self, c) for c in inspect(self).attrs.keys()}
 
