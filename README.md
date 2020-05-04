@@ -6,6 +6,11 @@ To install packages
 ``` 
 pip install Flask, jsonify, request, flask-cors, sqlalchemy
 ```
+If the database is not set up run:
+```
+python populate.py
+```
+
 Start the app:
 ```
 python app.py
